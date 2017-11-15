@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 // Importar Helper
 use AppBundle\Services\Helper;
 
+
+
 class DefaultController extends Controller
 {
     public function indexAction(Request $request)
@@ -28,16 +30,25 @@ class DefaultController extends Controller
         $users=$userRepo->findAll();
         // var_dump($users);
         // die();
+
         /*
         return new JsonResponse(array(
           'status'=>'success',
           'users'=>$users[0]->getName() // JsonResponse tiene problemas al convertir objetos php a json
         ));
         */
+
         // Llamando al contenedor de servicios
+        /*
         $helper=$this->get(Helper::class);
         echo $helper->holaMundo();
         die();
+        */
+
+        $helper=$this->get(Helper::class);
+        echo $helper->json($users[0]);
+        die();
+
         // Haciendo uso del metodo json de symfony 3
         return $this->json(array(
           'status'=>'success',

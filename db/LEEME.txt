@@ -4,7 +4,8 @@
    >php bin/console server:run
 3. Instalar los siguiente paquetes:
   backfront_symfony>composer require firebase/php-jwt
-  >backfront_symfony>composer require knplabs/knp-paginator-bundle
+  backfront_symfony>composer require knplabs/knp-paginator-bundle
+  backfront_symfony>composer require jms/serializer
 4. Hacer uso de archivos yml para mapear las rutas.
     - Crear la estructura: src/AppBundle/Resources/config/routing
     - Crear backfront_symfony/src/AppBundle/Resources/config/routing/default.yml
