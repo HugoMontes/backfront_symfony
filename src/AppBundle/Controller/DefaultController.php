@@ -6,6 +6,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+// Adicionar libreria para respuestas Json
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 class DefaultController extends Controller
 {
     public function indexAction(Request $request)
@@ -21,8 +24,12 @@ class DefaultController extends Controller
         $em=$this->getDoctrine()->getManager();
         $userRepo=$em->getRepository('BackendBundle:User');
         $users=$userRepo->findAll();
-        var_dump($users);
-        die();
+        // var_dump($users);
+        // die();
+        return new JsonResponse(array(
+          'status'=>'success',
+          'users'=>$users[0]->getName() // JsonResponse tiene problemas al convertir objetos php a json
+        ));
     }
 
 }
