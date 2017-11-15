@@ -26,9 +26,16 @@ class DefaultController extends Controller
         $users=$userRepo->findAll();
         // var_dump($users);
         // die();
+        /*
         return new JsonResponse(array(
           'status'=>'success',
           'users'=>$users[0]->getName() // JsonResponse tiene problemas al convertir objetos php a json
+        ));
+        */
+        // Haciendo uso del metodo json de symfony 3
+        return $this->json(array(
+          'status'=>'success',
+          'users'=>$users[0]->getName(),
         ));
     }
 
