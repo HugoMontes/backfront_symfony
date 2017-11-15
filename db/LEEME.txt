@@ -24,3 +24,8 @@
 11.Para realizar pruebas ingresar un registro users en la BD con password null
 10.Realizar pruebas editar DefaultController
 11.Devolver respuestas JSON, Editar DefaultController
+12.Para crear un servicio, crear el siguiente directorio
+   backfront_symfony/src/AppBundle/Services
+13.Crear la el archivo backfront_symfony/src/AppBundle/Services/Helpers.php
+14.Adicionar nuestro servicio en el archivo backfront_symfony/app/config/services.yml
+15. Para probar el servicio editar el DefaulController

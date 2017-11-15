@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 // Adicionar libreria para respuestas Json
 use Symfony\Component\HttpFoundation\JsonResponse;
+// Importar Helper
+use AppBundle\Services\Helper;
 
 class DefaultController extends Controller
 {
@@ -32,6 +34,10 @@ class DefaultController extends Controller
           'users'=>$users[0]->getName() // JsonResponse tiene problemas al convertir objetos php a json
         ));
         */
+        // Llamando al contenedor de servicios
+        $helper=$this->get(Helper::class);
+        echo $helper->holaMundo();
+        die();
         // Haciendo uso del metodo json de symfony 3
         return $this->json(array(
           'status'=>'success',
