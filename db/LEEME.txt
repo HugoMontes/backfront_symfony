@@ -21,3 +21,5 @@
 8. Cambiar los nombres de las clases de plural a singular.
 9. Generar las entidades con el siguiente comando:
    backfront_symfony>php bin/console doctrine:generate:entities BackendBundle
+11.Para realizar pruebas ingresar un registro users en la BD con password null
+10.Realizar pruebas editar DefaultController
