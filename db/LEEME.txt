@@ -16,3 +16,8 @@
    backfront_symfony>php bin/console generate:bundle --namespace=BackendBundle --format=yml
    (Presionar Enter para todo)
 6. Ingresar a backfront_symfony/app/config/config.yml y eliminar la ruta creada "backend".
+7. Crear y configurar las entidades: Mapear las tablas de la BD con el siguiente comando:
+   backfront_symfony>php bin/console doctrine:mapping:import BackendBundle yml
+8. Cambiar los nombres de las clases de plural a singular.
+9. Generar las entidades con el siguiente comando:
+   backfront_symfony>php bin/console doctrine:generate:entities BackendBundle
