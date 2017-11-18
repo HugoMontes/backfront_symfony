@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 // Adicionar libreria para respuestas Json
-use Symfony\Component\HttpFoundation\JsonResponse;
+// use Symfony\Component\HttpFoundation\JsonResponse;
 // Importar Helper
 use AppBundle\Services\Helper;
 
@@ -56,4 +56,25 @@ class DefaultController extends Controller
         ));
     }
 
+
+    public function pruebasJsonAction(Request $request){
+      $em=$this->getDoctrine()->getManager();
+      $userRepo=$em->getRepository('BackendBundle:User');
+      $users=$userRepo->findAll();
+
+      // Obtener una instancia de Helper
+      $helper=$this->get(Helper::class);
+      // Devolviendo un dato
+      // echo $helper->json($users[0]->getName());
+      // die();
+      // Devolviendo un objeto
+      // echo $helper->json($users[0]);
+      // die();
+      // Devolviendo un array
+      // return $helper->json($users);
+      return $helper->json(array(
+          'status'=>'success',
+          'users'=>$users
+      ));
+    }
 }

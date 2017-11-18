@@ -7,3 +7,8 @@ default_pruebas:
     path: /pruebas
     defaults: { _controller:"AppBundle:Default:pruebas"}
     methods: GET
+
+default_pruebas_json:
+    path: /pruebas/json
+    defaults: { _controller:"AppBundle:Default:pruebasjson"}
+    methods: GET
