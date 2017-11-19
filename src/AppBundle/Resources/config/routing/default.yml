@@ -12,3 +12,8 @@ default_pruebas_json:
     path: /pruebas/json
     defaults: { _controller:"AppBundle:Default:pruebasjson"}
     methods: GET
+
+default_login:
+    path: /login
+    defaults: { _controller:"AppBundle:Default:login"}
+    methods: POST
