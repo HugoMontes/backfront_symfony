@@ -139,4 +139,27 @@ class DefaultController extends Controller
       }
       return $helper->json($data);
     }
+    // Funcion para solicitar lista de usuarios
+    public function pruebasTokenAction(Request $request){
+      $helper=$this->get(Helper::class);
+      $jwt_auth=$this->get(JwtAuth::class);
+      $token=$request->get('authorization',null);
+      // Verificar que que el token existe y es valido
+      if($token && $jwt_auth->checkToken($token)){
+        // Listar usuarios
+        $em=$this->getDoctrine()->getManager();
+        $userRepo=$em->getRepository('BackendBundle:User');
+        $users=$userRepo->findAll();
+        // Retornar resultado
+        return $helper->json(array(
+            'status'=>'success',
+            'users'=>$users,
+        ));
+      }else{
+        return $helper->json(array(
+            'status'=>'error',
+            'data'=>'Autorizacion no valida',
+        ));
+      }
+    }
 }
