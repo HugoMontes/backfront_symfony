@@ -103,7 +103,8 @@ class DefaultController extends Controller
         // En caso de estar vacios setear null
         $email=isset($params->email)?$params->email:null;
         $password=isset($params->password)?$params->password:null;
-
+        // Obtener gethash para codificar o decodificar
+        $getHash=isset($params->getHash)?$params->getHash:null;
         // Crear una instancia de validacion para email
         $emailConstraint=new Assert\Email();
         // Asignar un mensaje de error
@@ -117,8 +118,7 @@ class DefaultController extends Controller
           // Cargar el servicio al controlador
           $jwt_auth=$this->get(JwtAuth::class);
           // Llamar al metodo del JwtAuth
-          $signup=$jwt_auth->signup($email, $password);
-
+          $signup=$jwt_auth->signup($email, $password, $getHash);
           $data=array(
             'status'=>'success',
             'data'=>'Login correcto!',

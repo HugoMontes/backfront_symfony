@@ -9,7 +9,7 @@ CREATE TABLE users(
 	email		varchar(100),
 	password 	varchar(255),
 	created_at  datetime,
-  update_at  datetime,
+  updated_at  datetime,
 	CONSTRAINT pk_users PRIMARY KEY(id)
 )ENGINE=InnoDb;
 

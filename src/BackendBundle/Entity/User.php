@@ -45,7 +45,7 @@ class User
     /**
      * @var \DateTime
      */
-    private $updateAt;
+    private $updatedAt;
 
 
     /**
@@ -209,9 +209,9 @@ class User
      *
      * @return User
      */
-    public function setUpdateAt($updateAt)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -221,9 +221,8 @@ class User
      *
      * @return \DateTime
      */
-    public function getUpdateAt()
+    public function getUpdatedAt()
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 }
-
