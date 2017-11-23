@@ -160,4 +160,52 @@ class TaskController extends Controller{
     }
     return $helper->json($data);
   }
+
+  // Listar las tareas unicamente del usuario logueado
+  public function listAction(Request $request){
+    // Cargar el servicio Helper
+    $helper=$this->get(Helper::class);
+    // Cargar el servicio JwtAuth para comprobar token
+    $jwt_auth=$this->get(JwtAuth::class);
+    // Recoger token que llega por la peticion POST
+    $token=$request->get('authorization', null);
+    // Verificar si se encuentra correctamente logueado
+    $authCheck=$jwt_auth->checkToken($token);
+    if($authCheck){
+      // Obtener los datos del usuario logeado
+      $identity=$jwt_auth->checkToken($token, true);
+      // Realizar la consulta para listar las tareas
+      $em=$this->getDoctrine()->getManager();
+      $dql='SELECT t FROM BackendBundle:Task t ORDER BY t.id DESC';
+      $query=$em->createQuery($dql);
+      // Recoger el parametro entero de page de la url
+      $page=$request->query->getInt('page',1);
+      // Recoger el servicio de KnpPaginator
+      $paginator=$this->get('knp_paginator');
+      // Mostrar 10 tareas por pagina
+      $items_per_page=10;
+      // Cargar las tareas en $pagination
+      $pagination=$paginator->paginate($query,$page,$items_per_page);
+      // Guardar numero total de registros
+      $total_items_count=$pagination->getTotalItemCount();
+      // Retornar los datos en el array
+      $data=array(
+        'status'=>'success',
+        'code'=>200,
+        'total_items_count'=>$total_items_count,
+        'page_actual'=>$page,
+        'items_per_page'=>$items_per_page,
+        // Ceil: Funcion de php para redondear
+        'total_pages'=>ceil($total_items_count/$items_per_page),
+        'data'=>$pagination
+      );
+    }else{
+      $data=array(
+        'status'=>'error',
+        'code'=>500,
+        'msg'=>'Autorizacion no valida!'
+      );
+    }
+    return $helper->json($data);
+  }
 }
