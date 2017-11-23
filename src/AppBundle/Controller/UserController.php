@@ -53,9 +53,11 @@ class UserController extends Controller{
           $user->setName($name);
           $user->setSurname($surname);
           $user->setEmail($email);
-          $user->setPassword($password);
           $user->setRole($role);
           $user->setCreatedAt($createdAt);
+          // Cifrar la password con la funcion hash propia de php
+          $pwd=hash('SHA256', $password);
+          $user->setPassword($pwd);
           // Entity manager para las consultas a la BD
           $em=$this->getDoctrine()->getManager();
           // Realizando consulta, tratando de obtener usuario duplicado
@@ -126,13 +128,18 @@ class UserController extends Controller{
           $emailConstraint->message='Este email no es valido';
           $validate_email=$this->get('validator')->validate($email, $emailConstraint);
           // Validando datos, exigiendo datos obligatorios
-          if($email!=null && count($validate_email)==0 && $password!=null && $name!=null && $surname!=null){
+          if($email!=null && count($validate_email)==0 && $name!=null && $surname!=null){
             // Setear valores a actualizar
             $user->setName($name);
             $user->setSurname($surname);
             $user->setEmail($email);
-            $user->setPassword($password);
             $user->setUpdatedAt($updatedAt);
+            // Verificar si password es distinto de null
+            if($password!=null){
+              // Cifrar la password con la funcion hash propia de php
+              $pwd=hash('SHA256', $password);
+              $user->setPassword($pwd);  
+            }
             // Actualizar usuario en la base de datos
             $em->persist($user);
             $em->flush();

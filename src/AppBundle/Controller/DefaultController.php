@@ -112,6 +112,9 @@ class DefaultController extends Controller
         // Validar el email
         $validate_email=$this->get('validator')->validate($email, $emailConstraint);
 
+        // Cifrar la contraseña
+        $password=hash('SHA256', $password);
+
         // Verificar si email tiene errores de validacion
         // Tambien verificar que passwor sea distinto de null
         if(count($validate_email)==0 && $password!=null){
