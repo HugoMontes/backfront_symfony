@@ -12,3 +12,8 @@ task_list:
     path: /list
     defaults: { _controller:"AppBundle:Task:list", id:null}
     methods: POST
+
+task_detail:
+    path: /detail/{id}
+    defaults: { _controller:"AppBundle:Task:detail", id:null}
+    methods: POST
