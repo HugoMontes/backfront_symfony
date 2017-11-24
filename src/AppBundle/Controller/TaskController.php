@@ -321,4 +321,47 @@ class TaskController extends Controller{
     }
     return $helper->json($data);
   }
+
+  public function removeAction(Request $request, $id=null){
+    // Cargar el servicio Helper
+    $helper=$this->get(Helper::class);
+    // Cargar el servicio JwtAuth para comprobar token
+    $jwt_auth=$this->get(JwtAuth::class);
+    // Recoger token que llega por la peticion POST
+    $token=$request->get('authorization', null);
+    // Verificar si se encuentra correctamente logueado
+    $authCheck=$jwt_auth->checkToken($token);
+    if($authCheck){
+      // Obtener los datos del usuario logeado
+      $identity=$jwt_auth->checkToken($token, true);
+      // Buscar la tarea
+      $em=$this->getDoctrine()->getManager();
+      $task=$em->getRepository('BackendBundle:Task')->findOneBy(array('id'=>$id));
+      // Verificar si la tarea existe y si es propia del usuario logueado
+      if($task && is_object($task) && $identity->sub==$task->getUser()->getId()){
+        // Eliminar la tarea
+        $em->remove($task);
+        $em->flush();
+        // Devolver tarea eliminada
+        $data=array(
+          'status'=>'success',
+          'code'=>200,
+          'data'=>$task
+        );
+      }else{
+        $data=array(
+          'status'=>'error',
+          'code'=>404,
+          'msg'=>'Tarea no encontrada!'
+        );
+      }
+    }else{
+      $data=array(
+        'status'=>'error',
+        'code'=>500,
+        'msg'=>'Autorizacion no valida!'
+      );
+    }
+    return $helper->json($data);
+  }
 }
