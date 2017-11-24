@@ -247,4 +247,78 @@ class TaskController extends Controller{
     }
     return $helper->json($data);
   }
+
+  public function searchAction(Request $request, $search=null){
+    // Cargar el servicio Helper
+    $helper=$this->get(Helper::class);
+    // Cargar el servicio JwtAuth para comprobar token
+    $jwt_auth=$this->get(JwtAuth::class);
+    // Recoger token que llega por la peticion POST
+    $token=$request->get('authorization', null);
+    // Verificar si se encuentra correctamente logueado
+    $authCheck=$jwt_auth->checkToken($token);
+    if($authCheck){
+      // Obtener los datos del usuario logeado
+      $identity=$jwt_auth->checkToken($token, true);
+      $em=$this->getDoctrine()->getManager();
+      // Obtener filter de la peticion por post
+      $filter=$request->get('filter',null);
+      if(empty($filter)){
+        $filter=null;
+      }elseif($filter==1){
+        $filter='new';
+      }elseif($filter==2){
+        $filter='todo';
+      }elseif($filter==3){
+        $filter='finished';
+      }
+      // Obtener order de la peticion por post
+      $order=$request->get('order',null);
+      if(empty($order) || $order==2){
+        $order='DESC';
+      }else{
+        $order='ASC';
+      }
+      // Busqueda
+      if($search!=null){
+        // Buscar en las tareas del usuario logueado
+        $dql='SELECT t FROM BackendBundle:Task t '
+            .'WHERE t.user = '.$identity->sub.' AND '
+            .'(t.title LIKE :search OR t.description LIKE :search)';
+      }else{
+        $dql='SELECT t FROM BackendBundle:Task t '
+             .'WHERE t.user = '.$identity->sub;
+      }
+      // Set filter
+      if($filter!=null){
+        $dql.=' AND t.status = :filter';
+      }
+      // Set order
+      $dql.=' ORDER BY t.id '.$order;
+      // Crear la consulta
+      $query=$em->createQuery($dql);
+      // Set parameter filter
+      if($filter!=null){
+        $query->setParameter('filter', $filter);
+      }
+      // Set parameter search
+      if(!empty($search)){
+        $query->setParameter('search','%'.$search.'%');
+      }
+      // Obtener las tareas desde la consulta
+      $tasks=$query->getResult();
+      $data=array(
+        'status'=>'success',
+        'code'=>200,
+        'data'=>$tasks
+      );
+    }else{
+      $data=array(
+        'status'=>'error',
+        'code'=>500,
+        'msg'=>'Autorizacion no valida!'
+      );
+    }
+    return $helper->json($data);
+  }
 }
