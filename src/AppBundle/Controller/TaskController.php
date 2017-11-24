@@ -174,9 +174,9 @@ class TaskController extends Controller{
     if($authCheck){
       // Obtener los datos del usuario logeado
       $identity=$jwt_auth->checkToken($token, true);
-      // Realizar la consulta para listar las tareas
+      // Realizar la consulta para listar las tareas del usuario logueado
       $em=$this->getDoctrine()->getManager();
-      $dql='SELECT t FROM BackendBundle:Task t ORDER BY t.id DESC';
+      $dql='SELECT t FROM BackendBundle:Task t WHERE t.user='.$identity->sub.' ORDER BY t.id DESC';
       $query=$em->createQuery($dql);
       // Recoger el parametro entero de page de la url
       $page=$request->query->getInt('page',1);
